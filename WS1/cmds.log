@@ -1,0 +1,13 @@
+    1  passwd
+    2  wget -O out.pdf https://tinyurl.com/yy94jltt
+    3  cd ~
+    4  cd /mnt/scratch/CS131_billa/FA26/RanjanVarun
+    5  mkdir cs131
+    6  cd cs131
+    7  git init
+    8  git config --global user.name "Varun Ranjan"
+    9  git config --global user.email "varun.ranjan@sjsu.edu"
+   10  git remote add origin https://github.com/varunranjan-creator/cs131.git
+   11  mkdir WS1
+   12  cd WS1
+   13  history > cmds.log
