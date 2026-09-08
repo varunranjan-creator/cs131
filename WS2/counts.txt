@@ -1,0 +1,26 @@
+================================================================================
+CS131 - Worksheet 2: Replies and Retweets Counts
+Student Name: Varun Ranjan
+================================================================================
+[Explanation of columns]:
+The first number is the Line Count (number of tweet occurrences).
+The second number is the Word Count (total words across matching lines).
+--------------------------------------------------------------------------------
+1. File: downloaded_tweets_extend_nolf.ASCII.CLEAN.tsv
+--------------------------------------------------------------------------------
+- Matches for "replied_to":
+  15502  530350
+  Meaning: Total lines/tweets in this dataset that are replies to another user.
+- Matches for "retweeted":
+ 178052 4973621
+  Meaning: Total lines/tweets in this dataset that are retweets.
+--------------------------------------------------------------------------------
+2. File: downloaded_tweets_extend_original_ids_nolf.ASCII.CLEAN.tsv
+--------------------------------------------------------------------------------
+- Matches for "replied_to":
+  14896  620310
+  Meaning: Total lines/tweets in this dataset that are replies to another user.
+- Matches for "retweeted":
+     30    1071
+  Meaning: Total lines/tweets in this dataset that are retweets.
+================================================================================

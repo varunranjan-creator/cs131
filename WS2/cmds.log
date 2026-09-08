@@ -1,0 +1,148 @@
+    1  passwd
+    2  wget -O out.pdf https://tinyurl.com/yy94jltt
+    3  cd ~
+    4  cd /mnt/scratch/CS131_billa/FA26/RanjanVarun
+    5  mkdir cs131
+    6  cd cs131
+    7  git init
+    8  git config --global user.name "Varun Ranjan"
+    9  git config --global user.email "varun.ranjan@sjsu.edu"
+   10  git remote add origin https://github.com/varunranjan-creator/cs131.git
+   11  mkdir WS1
+   12  cd WS1
+   13  history > cmds.log
+   14  cd ~/cs131
+   15  git add WS1/cmds.log
+   16  git commit -m "First commit: WS1 cmds.log"
+   17  git branch -M main
+   18  git push -u origin main
+   19  git branch -M main
+   20  git push -u origin main
+   21  echo $HOME
+   22  pwd
+   23  whoami
+   24  id
+   25  groups
+   26  ls -ld ~
+   27  grep "^$(id -gn):" /etc/group
+   28  mkdir temp
+   29  chmod u-x temp
+   30  ls -ld temp
+   31  cd temp
+   32  ls temp
+   33  ls -l temp
+   34  touch temp/test.txt
+   35  chmod u+x temp
+   36  rm -rf temp
+   37  mkdir temp2
+   38  mv temp2 temp3
+   39  cp temp3 temp4
+   40  cp -r temp3 temp4
+   41  rm -rf temp3 temp4
+   42  ls /proc | grep -i mem
+   43  ls /proc | grep -i cpu
+   44  head -n 5 /proc/meminfo
+   45  grep -c "^processor" /proc/cpuinfo
+   46  grep "model name" /proc/cpuinfo | head -n 1
+   47  grep "cpu MHz" /proc/cpuinfo | head -n 1
+   48  ln -s /mnt/scratch/CS131_billa/billandreopoulos/CS131_wba/DATA/downloaded_tweets_extend_nolf.ASCII.CLEAN.tsv .
+   49  ln -s /mnt/scratch/CS131_billa/billandreopoulos/CS131_wba/DATA/downloaded_tweets_extend_original_ids_nolf.ASCII.CLEAN.tsv .
+   50  ls -lh -L downloaded_tweets_extend*.tsv
+   51  # or:
+   52  du -h -L downloaded_tweets_extend*.tsv
+   53  wc -l downloaded_tweets_extend_nolf.ASCII.CLEAN.tsv
+   54  wc -l downloaded_tweets_extend_original_ids_nolf.ASCII.CLEAN.tsv
+   55  cut -f4 downloaded_tweets_extend_nolf.ASCII.CLEAN.tsv | grep -i "great" | wc -l
+   56  cut -f4 downloaded_tweets_extend_original_ids_nolf.ASCII.CLEAN.tsv | grep -i "great" | wc -l
+   57  file -i -L downloaded_tweets_extend_nolf.ASCII.CLEAN.tsv
+   58  file -i -L downloaded_tweets_extend_original_ids_nolf.ASCII.CLEAN.tsv
+   59  head -n 2 downloaded_tweets_extend_nolf.ASCII.CLEAN.tsv
+   60  cut -f2 downloaded_tweets_extend_nolf.ASCII.CLEAN.tsv | sort -u | wc -l
+   61  cut -f2 downloaded_tweets_extend_original_ids_nolf.ASCII.CLEAN.tsv | sort -u | wc -l
+   62  cut -f1 downloaded_tweets_extend_nolf.ASCII.CLEAN.tsv | sort -u | wc -l
+   63  cut -f1 downloaded_tweets_extend_original_ids_nolf.ASCII.CLEAN.tsv | sort -u | wc -l
+   64  cut -f4 downloaded_tweets_extend_nolf.ASCII.CLEAN.tsv | sort -u | wc -l
+   65  cut -f4 downloaded_tweets_extend_original_ids_nolf.ASCII.CLEAN.tsv | sort -u | wc -l
+   66  exit
+   67  head -n 25 /proc/cpuinfo
+   68  exit
+   69  echo $HOME
+   70  pwd
+   71  whoami
+   72  id
+   73  groups
+   74  ls -ld ~
+   75  grep "^$(id -gn):" /etc/group
+   76  mkdir temp
+   77  chmod u-x temp
+   78  ls -ld temp
+   79  cd temp
+   80  ls temp
+   81  ls -l temp
+   82  touch temp/test.txt
+   83  chmod u+x temp
+   84  rm -rf temp
+   85  mkdir temp2
+   86  mv temp2 temp3
+   87  cp temp3 temp4
+   88  cp -r temp3 temp4
+   89  rm -rf temp3 temp4
+   90  ls /proc | grep -i mem
+   91  ls /proc | grep -i cpu
+   92  head -n 5 /proc/meminfo
+   93  grep -c "^processor" /proc/cpuinfo
+   94  grep "model name" /proc/cpuinfo | head -n 1
+   95  grep "cpu MHz" /proc/cpuinfo | head -n 1
+   96  ln -s /mnt/scratch/CS131_billa/billandreopoulos/CS131_wba/DATA/downloaded_tweets_extend_nolf.ASCII.CLEAN.tsv .
+   97  ln -s /mnt/scratch/CS131_billa/billandreopoulos/CS131_wba/DATA/downloaded_tweets_extend_original_ids_nolf.ASCII.CLEAN.tsv .
+   98  ls -lh -L downloaded_tweets_extend*.tsv
+   99  # or:
+  100  du -h -L downloaded_tweets_extend*.tsv
+  101  wc -l downloaded_tweets_extend_nolf.ASCII.CLEAN.tsv
+  102  wc -l downloaded_tweets_extend_original_ids_nolf.ASCII.CLEAN.tsv
+  103  cut -f4 downloaded_tweets_extend_nolf.ASCII.CLEAN.tsv | grep -i "great" | wc -l
+  104  cut -f4 downloaded_tweets_extend_original_ids_nolf.ASCII.CLEAN.tsv | grep -i "great" | wc -l
+  105  file -i -L downloaded_tweets_extend_nolf.ASCII.CLEAN.tsv
+  106  file -i -L downloaded_tweets_extend_original_ids_nolf.ASCII.CLEAN.tsv
+  107  head -n 2 downloaded_tweets_extend_nolf.ASCII.CLEAN.tsv
+  108  cut -f2 downloaded_tweets_extend_nolf.ASCII.CLEAN.tsv | sort -u | wc -l
+  109  cut -f2 downloaded_tweets_extend_original_ids_nolf.ASCII.CLEAN.tsv | sort -u | wc -l
+  110  cut -f1 downloaded_tweets_extend_nolf.ASCII.CLEAN.tsv | sort -u | wc -l
+  111  cut -f1 downloaded_tweets_extend_original_ids_nolf.ASCII.CLEAN.tsv | sort -u | wc -l
+  112  cut -f4 downloaded_tweets_extend_nolf.ASCII.CLEAN.tsv | sort -u | wc -l
+  113  cut -f4 downloaded_tweets_extend_original_ids_nolf.ASCII.CLEAN.tsv | sort -u | wc -l
+  114  head -n 25 /proc/cpuinfo
+  115  exit
+  116  cd /mnt/scratch/CS131_billa/FA26/RanjanVarun/cs131
+  117  ls
+  118  cd~
+  119  cd ..
+  120  ls
+  121  mv ~/A1/ ~/cs131/
+  122  ls
+  123  cd cs131
+  124  ls
+  125  cd A1
+  126  script a1.txt
+  127  nano a1.txt
+  128  script a1.txt
+  129  cp a1.txt a1.txt.raw
+  130  sed -i -e 's/\x1b\[[0-9;]*m//g' a1.txt
+  131  sed -i 's/\r//g' a1.txt
+  132  nano a1.txt
+  133  cd ~/cs131
+  134  git status
+  135  git add A1/a1.txt
+  136  git commit -m "Submit Assignment 1 (A1)"
+  137  git push origin main
+  138  cd ~/cs131
+  139  mkdir WS2
+  140  cd WS2
+  141  ln -s /mnt/scratch/CS131_billa/billandreopoulos/CS131_wba/DATA/downloaded_tweets_extend_nolf.ASCII.CLEAN.tsv .
+  142  ln -s /mnt/scratch/CS131_billa/billandreopoulos/CS131_wba/DATA/downloaded_tweets_extend_original_ids_nolf.ASCII.CLEAN.tsv .
+  143  grep "replied_to" downloaded_tweets_extend_nolf.ASCII.CLEAN.tsv | wc -l -w > counts.txt
+  144  grep "retweeted" downloaded_tweets_extend_nolf.ASCII.CLEAN.tsv | wc -l -w >> counts.txt
+  145  grep "replied_to" downloaded_tweets_extend_original_ids_nolf.ASCII.CLEAN.tsv | wc -l -w >> counts.txt
+  146  grep "retweeted" downloaded_tweets_extend_original_ids_nolf.ASCII.CLEAN.tsv | wc -l -w >> counts.txt
+  147  nano counts.txt
+  148  history > cmds.log
