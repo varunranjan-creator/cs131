@@ -1,0 +1,208 @@
+======================================================================
+CS131 - ASSIGNMENT 1 ANSWERS
+Student Name: Varun Ranjan
+======================================================================
+
+1) Created directory A1 under the git repository cs131 and performed all assignment tasks inside it.
+   Commands used: mkdir A1; cd A1
+
+2) Home directory path:
+   /mnt/scratch/CS131_billa/FA26/RanjanVarun
+   Commands used: echo $HOME, pwd
+
+3) Username: RanjanVarun
+   Group(s): billa (gid=8100)
+   Commands used: whoami, id, groups
+
+4) Home directory owner and group:
+   - Owner: RanjanVarun
+   - Group: billa
+   - Other users in this group: billandre, billandreopoulos, jessicawestfall, AhmedTanzilZaki, and other class students listed in /etc/group.
+   Commands used: ls -ld ~, grep "^$(id -gn):" /etc/group
+
+5) Directory permissions on temp:
+   - Allowed to cd into it? No (bash: cd: temp: Permission denied). Execute permission is required to enter/traverse a directory.
+   - Can you ls it? Yes, ls temp runs without error (shows nothing because directory is empty).
+   - Can you ls -l it? Returns total 0. If files were inside, it would fail to read attributes/metadata without execute permission.
+   - Can you create files under it? No (touch: cannot touch 'temp/test.txt': Permission denied).
+   Commands used: mkdir temp; chmod u-x temp; ls -ld temp; cd temp; ls temp; ls -l temp; touch temp/test.txt
+
+6) Directory move and copy:
+   - Allowed to mv temp2 to temp3? Yes, successfully renamed.
+   - Allowed to cp temp3 to temp4 directly? No, produces error: "cp: -r not specified; omitting directory 'temp3'".
+   - How to copy an entire directory: Use the recursive flag: cp -r temp3 temp4
+   Commands used: mkdir temp2; mv temp2 temp3; cp temp3 temp4; cp -r temp3 temp4
+
+7) Files under /proc:
+   - Memory information file: /proc/meminfo
+   - CPU information file: /proc/cpuinfo
+   Commands used: ls /proc | grep -i mem; ls /proc | grep -i cpu
+
+8) Total memory on server:
+   73080768 kB (approx. 73 GB)
+   Command used: head -n 5 /proc/meminfo
+
+9) CPU information:
+   - Number of processors: 256
+   - Processor architecture name: POWER9
+   - Processor speed: 2.75 GHz
+   Commands used: grep -c "^processor" /proc/cpuinfo; head -n 25 /proc/cpuinfo
+
+10) Twitter Datasets:
+    - downloaded_tweets_extend_nolf.ASCII.CLEAN.tsv:
+      Size: 61 MB (~0.061 GB)
+      Lines: 231,302 lines
+    - downloaded_tweets_extend_original_ids_nolf.ASCII.CLEAN.tsv:
+      Size: 44 MB (~0.044 GB)
+      Lines: 145,597 lines
+    Commands used: ln -s ...; ls -lh -L ...; du -h -L ...; wc -l ...
+
+11) Tweets with "great" in hashtags (Column 4, case-insensitive):
+    - downloaded_tweets_extend_nolf.ASCII.CLEAN.tsv: 138
+    - downloaded_tweets_extend_original_ids_nolf.ASCII.CLEAN.tsv: 202
+    Commands used: cut -f4 <file> | grep -i "great" | wc -l
+
+12a) Character encoding:
+     Both files have charset=us-ascii (text/plain; charset=us-ascii)
+     Command used: file -i -L <file>
+     (Note: 12b and 12c were crossed out per assignment instructions).
+
+13) Column Statistics:
+    13a) Unique users (Column 2):
+         - File 1 (downloaded_tweets_extend_nolf.ASCII.CLEAN.tsv): 390
+         - File 2 (downloaded_tweets_extend_original_ids_nolf.ASCII.CLEAN.tsv): 49,104
+         Command: cut -f2 <file> | sort -u | wc -l
+    13b) Unique tweets (Column 1):
+         - File 1: 229,126
+         - File 2: 145,596
+         Command: cut -f1 <file> | sort -u | wc -l
+    13c) Unique hashtags (Column 4):
+         - File 1: 60,573
+         - File 2: 72,565
+         Comparison: The number of unique hashtags is significantly LESS than the number of unique tweets in both datasets (e.g. 60,573 hashtags vs 229,126 tweets in File 1; 72,565 hashtags vs 145,596 tweets in File 2). This occurs because many tweets share common hashtags, and many tweets contain no hashtags at all.
+         Command: cut -f4 <file> | sort -u | wc -l
+
+======================================================================
+COMMAND LOG / TERMINAL TRANSCRIPT BELOW:
+======================================================================
+
+Script started on 2026-09-07 20:40:10-04:00
+bash-4.4$ echo $HOME
+/mnt/scratch/CS131_billa/FA26/RanjanVarun
+bash-4.4$ pwd
+/mnt/scratch/CS131_billa/FA26/RanjanVarun/cs131/A1
+bash-4.4$ whoami
+RanjanVarun
+bash-4.4$ id
+uid=1725(RanjanVarun) gid=8100(billa) groups=8100(billa)
+bash-4.4$ groups
+billa
+bash-4.4$ ls -ld ~
+drwx------ 3 RanjanVarun billa 4096 Sep  7 20:37 /mnt/scratch/CS131_billa/FA26/RanjanVarun
+bash-4.4$ grep "^$(id -gn):" /etc/group
+billa:x:8100:billandre,billandreopoulos,jessicawestfall,AhmedTanzilZaki,BalasaiPrasanthBalasaiAkshitaa,ChauKevinHoang,ChenHenry,DangKelly,HlaingNyunEi,KhantEdward,KidaneEdenElias,KimJiSoo,LaoJasmine,LeQuangHuy,LiJiaying,LiRoyce,LyNhuNgan,MaiAnnePhuong,MeloBryan,MesaAleatha,MujeebPuthenveeduAnwar,NguyenHuuHung,NguyenMark,NguyenQuynhPhuocNhu,PatelVirali,PhamTiffanyTuyetNhung,QuanKietTuan,SemsemRussell,SenoAbelJoash,ShelarShivamSuryakant,ShpilbergRoman,TranRaymondLam,VanJeffrey,VishnumolakalaChandrahasSai,VuongByron,WangAndyDinYuan,XuanWilliam,ZamoraTomasAnthony,ChandramouliIyer,JulienArmaganDitto,EthanAlexanderPark,SemharTesfagergshTeklehaimanot,NikkiHuynh,AyeNyeinKyaw,JoshuaHsu,BushraNaveed,ArefiAmirreza,BakshiKhushi,BelyaevIdo,ChowNeilXiang,DelRosarioStephaniMarieSoriano,DholeAnushkaAmol,HtetNayMyo,JuradoEthanHan-Guei,LaiVince,LangerMickAchilles,LeeJustin,LoShannon,ManleyBrendanKunio,MarcosPaulLewis,MollAnthonyMatthew,NadipalliSathvika,NepoEthanRiley,NguyenDavidAnh,NguyenFrederickHoangNguyen,NiedzialekAnia,PanchalVaishnavi,PandaPrateekKumar,PeregrinoGabrielSuzuki,PolAlishaUmesh,QiaoWilliam,RafananManuelTejada,RaiSatyansh,RamosJelinneQuelinaReyes,SaitoPatriciaZhou,ShawSweksha,ShiAliciaDestiny,SiasCarolynaGabriella,SilvasJohnPaulGaite,SultanaliTehkhum,TadinaSean,ThanAndrian,TsoiKevinChiShing,VuJimmy,WangZiming,WongArthurBo,WongMatthewThomas,XavierAlex,XuAlanYiheng,XuSamson,XueErica,ZhaiMarvin,ZhanJeffrey,SenthilSanthosh,MikeChau,VeedhiBhanushali,testuser,testuser2,ShahzadAhmed,FauldsIsabel,saitejaadusumilli,amrutaadusumilli,AhmedYousef,AlbatainehAbdullah,AyyappanVignesh,BagdouriChahid,BahlRupashi,BakraniBalaniKiana,BuddhavarapuThanmayi,CaoSydney,CarionRose,DangHieuson,DeokuleIra,FediakinaMaria,GajavadaSaket,Garcia-MoranKenneth,GarciaFatima,HaldiyaArjun,HuynhDavid,JoshiVed,KerseyMichael,KieuAnthony,KoJoshua,KurraSanjitha,LiIsabelle,LinThiha,LuuEverett,MahabaleshwarMukta,MukherjeeSoham,NavidadJaden,NguyenAlan,NguyenDuc,OuBrian,PanchmatiaArav,RanjanVarun,SanchezBanosYair,SanchezHurtadoBryan,SethAmishi,ShaikRehaan,ShaikhZainab,SinghAditi,SinghGursharan,SinghaniaNaya,SusanteoGabriella,ThapaNabin,ThawYinPhyuPhyu,XianXueyan,ZengJerry,PhwePhweHlaing
+bash-4.4$ mkdir temp
+bash-4.4$ chmod u-x temp
+bash-4.4$ ls -ld temp
+drw-r-xr-x 2 RanjanVarun billa 4096 Sep  7 20:40 temp
+bash-4.4$ cd temp
+bash: cd: temp: Permission denied
+bash-4.4$ ls temp
+bash-4.4$ ls -l temp
+total 0
+bash-4.4$ touch temp/test.txt
+touch: cannot touch 'temp/test.txt': Permission denied
+bash-4.4$ chmod u+x temp
+bash-4.4$ rm -rf temp
+bash-4.4$ mkdir temp2
+bash-4.4$ mv temp2 temp3
+bash-4.4$ cp temp3 temp4
+cp: -r not specified; omitting directory 'temp3'
+bash-4.4$ cp -r temp3 temp4
+bash-4.4$ rm -rf temp3 temp4
+bash-4.4$ ls /proc | grep -i mem
+iomem
+meminfo
+bash-4.4$ ls /proc | grep -i cpu
+cpuinfo
+bash-4.4$ head -n 5 /proc/meminfo
+MemTotal:       73080768 kB
+MemFree:        37815296 kB
+MemAvailable:   53041536 kB
+Buffers:         1321856 kB
+Cached:         16464512 kB
+bash-4.4$ grep -c "^processor" /proc/cpuinfo
+256
+bash-4.4$ grep "model name" /proc/cpuinfo | head -n 1
+bash-4.4$ grep "cpu MHz" /proc/cpuinfo | head -n 1
+bash-4.4$ ln -s /mnt/scratch/CS131_billa/billandreopoulos/CS131_wba/DATA/downloadded_tweets_extend_nolf.ASCII.CLEAN.tsv .
+ln: failed to create symbolic link './downloaded_tweets_extend_nolf.ASCII.CLEAN.tsv': File exists
+bash-4.4$ ln -s /mnt/scratch/CS131_billa/billandreopoulos/CS131_wba/DATA/downloadded_tweets_extend_original_ids_nolf.ASCII.CLEAN.tsv .
+ln: failed to create symbolic link './downloaded_tweets_extend_original_ids_nolf.ASCII.CLEAN.tsv': File exists
+bash-4.4$ ls -lh -L downloaded_tweets_extend*.tsv
+-rw-r--r-- 4 billandreopoulos billa 61M Sep  8  2023 downloaded_tweets_extend_nolf.ASCII.CLEAN.tsv
+-rw-r--r-- 4 billandreopoulos billa 44M Sep 12  2024 downloaded_tweets_extend_original_ids_nolf.ASCII.CLEAN.tsv
+bash-4.4$ # or:
+bash-4.4$ du -h -L downloaded_tweets_extend*.tsv
+61M	downloaded_tweets_extend_nolf.ASCII.CLEAN.tsv
+44M	downloaded_tweets_extend_original_ids_nolf.ASCII.CLEAN.tsv
+bash-4.4$ wc -l downloaded_tweets_extend_nolf.ASCII.CLEAN.tsv
+231302 downloaded_tweets_extend_nolf.ASCII.CLEAN.tsv
+bash-4.4$ wc -l downloaded_tweets_extend_original_ids_nolf.ASCII.CLEAN.tsv
+145597 downloaded_tweets_extend_original_ids_nolf.ASCII.CLEAN.tsv
+bash-4.4$ cut -f4 downloaded_tweets_extend_nolf.ASCII.CLEAN.tsv | grep -i "great"" | wc -l
+138
+bash-4.4$ cut -f4 downloaded_tweets_extend_original_ids_nolf.ASCII.CLEAN.tsv | grrep -i "great" | wc -l
+202
+bash-4.4$ file -i -L downloaded_tweets_extend_nolf.ASCII.CLEAN.tsv
+downloaded_tweets_extend_nolf.ASCII.CLEAN.tsv: text/plain; charset=us-ascii
+bash-4.4$ file -i -L downloaded_tweets_extend_original_ids_nolf.ASCII.CLEAN.tsv
+downloaded_tweets_extend_original_ids_nolf.ASCII.CLEAN.tsv: text/plain; charset=us-ascii
+bash-4.4$ head -n 2 downloaded_tweets_extend_nolf.ASCII.CLEAN.tsv
+id	author	date	hashtags	text	referenced	in_reply_to_user_id	public_metrics
+1520543208614334465	308045021	2022-04-30 23:18:45+00:00	awesomePeopleOnTwitter	"On top of the chocolate, @benjean2 also included these for my Spanish learning child. I have another child going into Spanish for 2 years and these books, lovingly given, will be out to good use. I hope my kids will be worthy of her kindness. ? #awesomePeopleOnTwitter https://t.co/rGiSjqZXoe"			
+bash-4.4$ cut -f2 downloaded_tweets_extend_nolf.ASCII.CLEAN.tsv | sort -u | wc -ll
+
+390
+bash-4.4$ cut -f2 downloaded_tweets_extend_original_ids_nolf.ASCII.CLEAN.tsv | soort -u | wc -l
+49104
+bash-4.4$ cut -f1 downloaded_tweets_extend_nolf.ASCII.CLEAN.tsv | sort -u | wc -ll
+
+229126
+bash-4.4$ cut -f1 downloaded_tweets_extend_original_ids_nolf.ASCII.CLEAN.tsv | soort -u | wc -l
+145596
+bash-4.4$ cut -f4 downloaded_tweets_extend_nolf.ASCII.CLEAN.tsv | sort -u | wc -ll
+
+60573
+bash-4.4$ cut -f4 downloaded_tweets_extend_original_ids_nolf.ASCII.CLEAN.tsv | soort -u | wc -l
+72565
+bash-4.4$ head -n 25 /proc/cpuinfo
+processor	: 0
+cpu		: POWER9 (architected), altivec supported
+clock		: 2750.000000MHz
+revision	: 2.2 (pvr 004e 0202)
+
+processor	: 1
+cpu		: POWER9 (architected), altivec supported
+clock		: 2750.000000MHz
+revision	: 2.2 (pvr 004e 0202)
+
+processor	: 2
+cpu		: POWER9 (architected), altivec supported
+clock		: 2750.000000MHz
+revision	: 2.2 (pvr 004e 0202)
+
+processor	: 3
+cpu		: POWER9 (architected), altivec supported
+clock		: 2750.000000MHz
+revision	: 2.2 (pvr 004e 0202)
+
+processor	: 4
+cpu		: POWER9 (architected), altivec supported
+clock		: 2750.000000MHz
+revision	: 2.2 (pvr 004e 0202)
+
+bash-4.4$ exit
+exit
+
+Script done on 2026-09-07 20:42:16-04:00
