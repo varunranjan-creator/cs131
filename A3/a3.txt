@@ -1,0 +1,155 @@
+================================================================================
+CS131 - ASSIGNMENT 3 ANSWERS
+Student Name: Varun Ranjan
+================================================================================
+
+SUMMARY OF GENERATED FILES & LINE COUNTS:
+1) retweets.txt: 178,045 lines
+   Joined referenced tweet IDs from retweets with original tweet IDs to produce tab-separated pairs (User A, User B).
+   Command: join -t $'\t' -1 1 -2 1 refid_userA.sorted.tsv tweetid_userB.sorted.tsv | awk -F "\t" '{print $2 "\t" $3}' > retweets.txt
+
+2) retweets_nobots.txt: 175,965 lines
+   Removed self-retweet bot interactions where User A == User B ($1 == $2).
+   Command: awk -F "\t" '$1 != $2' retweets.txt > retweets_nobots.txt
+
+3) retweets_nobots_uniq.txt: 90,080 lines
+   Removed redundant repeated interactions between the exact same pair of users.
+   Command: sort retweets_nobots.txt | uniq > retweets_nobots_uniq.txt
+
+4) Influence User Lists (User B, second field):
+   - high_influence_retweets.txt: 5,866 distinct users (received >= 3 retweets)
+   - low_influence_retweets.txt: 43,145 distinct users (received < 3 retweets)
+   - Total distinct User Bs: 5,866 + 43,145 = 49,011 users.
+   Commands:
+     cut -f2 retweets_nobots_uniq.txt | sort | uniq -c | awk '$1 >= 3 {print $2}' | sort > high_influence_retweets.txt
+     cut -f2 retweets_nobots_uniq.txt | sort | uniq -c | awk '$1 < 3 {print $2}' | sort > low_influence_retweets.txt
+
+5) Subnetwork Edge Counts:
+   - retweets_nobots_uniq_highinfluence.txt: 41,715 lines
+   - retweets_nobots_uniq_lowinfluence.txt:  48,365 lines
+   - Verification Check: 41,715 + 48,365 = 90,080 lines (matches retweets_nobots_uniq.txt exactly).
+   Command: awk associative array matching column 2 to partition subnetworks.
+
+--------------------------------------------------------------------------------
+QUESTION 6 ANSWERS:
+--------------------------------------------------------------------------------
+6A) How many distinct users exist who got retweeted (userB, second field) in each subnetwork?
+    - High-influence subnetwork: 5,866 distinct users
+      Command: cut -f2 retweets_nobots_uniq_highinfluence.txt | sort -u | wc -l
+    - Low-influence subnetwork:  43,145 distinct users
+      Command: cut -f2 retweets_nobots_uniq_lowinfluence.txt | sort -u | wc -l
+
+6B) How many distinct users retweeted them in total (userA, first field) in each subnetwork?
+    - High-influence subnetwork: 377 distinct users
+      Command: cut -f1 retweets_nobots_uniq_highinfluence.txt | sort -u | wc -l
+    - Low-influence subnetwork:  382 distinct users
+      Command: cut -f1 retweets_nobots_uniq_lowinfluence.txt | sort -u | wc -l
+
+6C) Top 10 users who got retweeted (userB, second field) the most from other users:
+    - High-influence subnetwork:
+        Retweets  User ID
+        --------  -------------------
+             194  18831926
+             131  163018653
+             130  1891490382
+             118  1219232377605644289
+             107  720139699
+             102  67934675
+              98  1120633726478823425
+              90  380648579
+              79  1296279134079823872
+              72  87358629
+      Command: cut -f2 retweets_nobots_uniq_highinfluence.txt | sort | uniq -c | sort -nr | head -n 10
+
+    - Low-influence subnetwork (all tied at 2 incoming retweets, as expected for < 3):
+        Retweets  User ID
+        --------  -------------------
+               2  UNKNOWNUSER145565
+               2  UNKNOWNUSER145547
+               2  UNKNOWNUSER145531
+               2  UNKNOWNUSER145523
+               2  UNKNOWNUSER145478
+               2  UNKNOWNUSER145473
+               2  UNKNOWNUSER145423
+               2  UNKNOWNUSER145401
+               2  UNKNOWNUSER145366
+               2  UNKNOWNUSER145364
+      Command: cut -f2 retweets_nobots_uniq_lowinfluence.txt | sort | uniq -c | sort -nr | head -n 10
+
+================================================================================
+TERMINAL COMMAND LOG:
+================================================================================
+bash-4.4$ export LC_ALL=C
+bash-4.4$ grep -h "type=retweeted" downloaded_tweets_extend*.tsv | tr -d '\r' | awk -F "\t" '{
+    s = $0;
+    if (sub(/.*ReferencedTweet id=/, "", s)) {
+        sub(/[^0-9].*/, "", s);
+        if (s != "" && $2 != "") {
+            print s "\t" $2;
+        }
+    }
+}' | sort -k1,1 > refid_userA.sorted.tsv
+bash-4.4$ cut -f1,2 downloaded_tweets_extend*.tsv | tr -d '\r' | grep -v '^id\t' | sort -u -k1,1 > tweetid_userB.sorted.tsv
+bash-4.4$ join -t $'\t' -1 1 -2 1 refid_userA.sorted.tsv tweetid_userB.sorted.tsv | awk -F "\t" '{print $2 "\t" $3}' > retweets.txt
+bash-4.4$ wc -l retweets.txt
+178045 retweets.txt
+bash-4.4$ awk -F "\t" '$1 != $2' retweets.txt > retweets_nobots.txt
+bash-4.4$ wc -l retweets_nobots.txt
+175965 retweets_nobots.txt
+bash-4.4$ sort retweets_nobots.txt | uniq > retweets_nobots_uniq.txt
+bash-4.4$ wc -l retweets_nobots_uniq.txt
+90080 retweets_nobots_uniq.txt
+bash-4.4$ cut -f2 retweets_nobots_uniq.txt | sort | uniq -c | awk '$1 >= 3 {print $2}' | sort > high_influence_retweets.txt
+bash-4.4$ cut -f2 retweets_nobots_uniq.txt | sort | uniq -c | awk '$1 < 3 {print $2}' | sort > low_influence_retweets.txt
+bash-4.4$ wc -l high_influence_retweets.txt low_influence_retweets.txt
+  5866 high_influence_retweets.txt
+ 43145 low_influence_retweets.txt
+ 49011 total
+bash-4.4$ awk -F "\t" '
+  NR==FNR { high[$1]=1; next }
+  ($2 in high) { print > "retweets_nobots_uniq_highinfluence.txt"; next }
+  { print > "retweets_nobots_uniq_lowinfluence.txt" }
+' high_influence_retweets.txt retweets_nobots_uniq.txt
+bash-4.4$ wc -l retweets_nobots_uniq.txt retweets_nobots_uniq_highinfluence.txt retweets_nobots_uniq_lowinfluence.txt
+  90080 retweets_nobots_uniq.txt
+  41715 retweets_nobots_uniq_highinfluence.txt
+  48365 retweets_nobots_uniq_lowinfluence.txt
+ 180160 total
+bash-4.4$ echo "=== 6A: Distinct User Bs ==="
+=== 6A: Distinct User Bs ===
+bash-4.4$ cut -f2 retweets_nobots_uniq_highinfluence.txt | sort -u | wc -l
+5866
+bash-4.4$ cut -f2 retweets_nobots_uniq_lowinfluence.txt | sort -u | wc -l
+43145
+bash-4.4$ echo "=== 6B: Distinct User As ==="
+=== 6B: Distinct User As ===
+bash-4.4$ cut -f1 retweets_nobots_uniq_highinfluence.txt | sort -u | wc -l
+377
+bash-4.4$ cut -f1 retweets_nobots_uniq_lowinfluence.txt | sort -u | wc -l
+382
+bash-4.4$ echo "=== 6C: Top 10 User Bs - High Influence ==="
+=== 6C: Top 10 User Bs - High Influence ===
+bash-4.4$ cut -f2 retweets_nobots_uniq_highinfluence.txt | sort | uniq -c | sort -nr | head -n 10
+    194 18831926
+    131 163018653
+    130 1891490382
+    118 1219232377605644289
+    107 720139699
+    102 67934675
+     98 1120633726478823425
+     90 380648579
+     79 1296279134079823872
+     72 87358629
+bash-4.4$ echo "=== 6C: Top 10 User Bs - Low Influence ==="
+=== 6C: Top 10 User Bs - Low Influence ===
+bash-4.4$ cut -f2 retweets_nobots_uniq_lowinfluence.txt | sort | uniq -c | sort -nr | head -n 10
+      2 UNKNOWNUSER145565
+      2 UNKNOWNUSER145547
+      2 UNKNOWNUSER145531
+      2 UNKNOWNUSER145523
+      2 UNKNOWNUSER145478
+      2 UNKNOWNUSER145473
+      2 UNKNOWNUSER145423
+      2 UNKNOWNUSER145401
+      2 UNKNOWNUSER145366
+      2 UNKNOWNUSER145364
