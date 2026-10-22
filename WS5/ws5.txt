@@ -1,0 +1,84 @@
+================================================================================
+CS131 - WORKSHEET 5 ANSWERS
+Student Name: Varun Ranjan
+================================================================================
+
+TASK 1: gettweetbydate.sh
+- Purpose: Accepts a date parameter (format YY-MM-DD or YYYY-MM-DD), ensures the directory ~/TWEETS exists, and outputs all tweets that occurred on that date from the datasets into ~/TWEETS/<date>.out.
+- Script Content:
+    #!/bin/bash
+    if [ -z "$1" ]; then
+        echo "Usage: $0 <YY-MM-DD or YYYY-MM-DD>"
+        exit 1
+    fi
+
+    DATE="$1"
+    mkdir -p ~/TWEETS
+
+    # Greps tweets matching the date (supports both YY-MM-DD and YYYY-MM-DD)
+    grep -E "($DATE|20$DATE)" /mnt/scratch/CS131_billa/billandreopoulos/CS131_wba/DATA/downloaded_tweets_extend*.tsv > ~/TWEETS/"$DATE".out
+- Test Result:
+    Command: ./gettweetbydate.sh 2022-04-30
+    Generated: ~/TWEETS/2022-04-30.out (972 KB, 2,559 lines)
+
+--------------------------------------------------------------------------------
+TASK 2: latesttweets.sh & Crontab Configuration
+- Purpose: Finds all files created under ~/TWEETS during the last 5 minutes (-mmin -5), appends their contents to ~/ALLTWEETS.out, and deletes (rm -f) the exact files that were appended.
+- Script Content:
+    #!/bin/bash
+    mkdir -p ~/TWEETS
+    touch ~/ALLTWEETS.out
+
+    # Append files created in the last 5 minutes to ~/ALLTWEETS.out and delete them
+    find ~/TWEETS -type f -name "*.out" -mmin -5 | xargs -r -i sh -c 'cat "{}" >> ~/ALLTWEETS.out && rm -f "{}"'
+- Permissions:
+    chmod 755 latesttweets.sh
+- Test Result:
+    Running ./latesttweets.sh appended 2,559 lines to ~/ALLTWEETS.out (972 KB) and cleanly removed 2022-04-30.out from ~/TWEETS (directory left with total 0).
+- Crontab Entry (runs every 5 minutes):
+    */5 * * * * /mnt/scratch/CS131_billa/FA26/RanjanVarun/cs131/WS5/latesttweets.sh
+
+================================================================================
+TERMINAL COMMAND LOG:
+================================================================================
+bash-4.4$ cat gettweetbydate.sh
+#!/bin/bash
+if [ -z "$1" ]; then
+    echo "Usage: $0 <YY-MM-DD or YYYY-MM-DD>"
+    exit 1
+fi
+
+DATE="$1"
+mkdir -p ~/TWEETS
+
+# Greps tweets matching the date (supports both YY-MM-DD and YYYY-MM-DD)
+grep -E "($DATE|20$DATE)" /mnt/scratch/CS131_billa/billandreopoulos/CS131_wba/DATA/downloaded_tweets_extend*.tsv > ~/TWEETS/"$DATE".out
+bash-4.4$ cat latesttweets.sh
+#!/bin/bash
+mkdir -p ~/TWEETS
+touch ~/ALLTWEETS.out
+
+# Append files created in the last 5 minutes to ~/ALLTWEETS.out and delete them
+find ~/TWEETS -type f -name "*.out" -mmin -5 | xargs -r -i sh -c 'cat "{}" >> ~/ALLTWEETS.out && rm -f "{}"'
+bash-4.4$ ./gettweetbydate.sh 2022-04-30
+bash-4.4$ ls -lh ~/TWEETS
+total 972K
+-rw-r--r-- 1 RanjanVarun billa 972K Oct 22 02:56 2022-04-30.out
+bash-4.4$ wc -l ~/TWEETS/2022-04-30.out
+2559 /mnt/scratch/CS131_billa/FA26/RanjanVarun/TWEETS/2022-04-30.out
+bash-4.4$ head -n 2 ~/TWEETS/2022-04-30.out
+/mnt/scratch/CS131_billa/billandreopoulos/CS131_wba/DATA/downloaded_tweets_extend_nolf.ASCII.CLEAN.tsv:1520543208614334465      308045021       2022-04-30 23:18:45+00:00       awesomePeopleOnTwitter  "On top of the chocolate, @benjean2 also included these for my Spanish learning child. I have another child going into Spanish for 2 years and these books, lovingly given, will be out to good use. I hope my kids will be worthy of her kindness. ? #awesomePeopleOnTwitter https://t.co/rGiSjqZXoe"
+/mnt/scratch/CS131_billa/billandreopoulos/CS131_wba/DATA/downloaded_tweets_extend_nolf.ASCII.CLEAN.tsv:1520503332246376448      308045021       2022-04-30 20:40:18+00:00       "journalism,NPR"        RT @HPM_ChristinaL: Really proud of our reporters. Yet another recognition of their work. Way to go! #journalism #NPR #AwardWinningJournali...     [<ReferencedTweet id=1513654494504136709 type=retweeted]
+bash-4.4$ ./latesttweets.sh
+bash-4.4$ ls -lh ~/TWEETS
+total 0
+bash-4.4$ ls -lh ~/ALLTWEETS.out
+-rw-r--r-- 1 RanjanVarun billa 972K Oct 22 03:00 /mnt/scratch/CS131_billa/FA26/RanjanVarun/ALLTWEETS.out
+bash-4.4$ wc -l ~/ALLTWEETS.out
+2559 /mnt/scratch/CS131_billa/FA26/RanjanVarun/ALLTWEETS.out
+bash-4.4$ head -n 2 ~/ALLTWEETS.out
+/mnt/scratch/CS131_billa/billandreopoulos/CS131_wba/DATA/downloaded_tweets_extend_nolf.ASCII.CLEAN.tsv:1520543208614334465      308045021       2022-04-30 23:18:45+00:00       awesomePeopleOnTwitter  "On top of the chocolate, @benjean2 also included these for my Spanish learning child. I have another child going into Spanish for 2 years and these books, lovingly given, will be out to good use. I hope my kids will be worthy of her kindness. ? #awesomePeopleOnTwitter https://t.co/rGiSjqZXoe"
+/mnt/scratch/CS131_billa/billandreopoulos/CS131_wba/DATA/downloaded_tweets_extend_nolf.ASCII.CLEAN.tsv:1520503332246376448      308045021       2022-04-30 20:40:18+00:00       "journalism,NPR"        RT @HPM_ChristinaL: Really proud of our reporters. Yet another recognition of their work. Way to go! #journalism #NPR #AwardWinningJournali...       [<ReferencedTweet id=1513654494504136709 type=retweeted]
+bash-4.4$ (crontab -l 2>/dev/null; echo "*/5 * * * * $HOME/cs131/WS5/latesttweets.sh") | crontab -
+bash-4.4$ crontab -l
+*/5 * * * * /mnt/scratch/CS131_billa/FA26/RanjanVarun/cs131/WS5/latesttweets.sh
